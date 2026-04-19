@@ -4,10 +4,12 @@ import { Sidebar } from './components/Sidebar';
 import { StatsCards } from './components/StatsCards';
 import { InventoryTable } from './components/InventoryTable';
 import { TopLowStock } from './components/TopLowStock';
+import { FullInventory } from './components/FullInventory';
 import { AddProductModal } from './components/AddProductModal';
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [view, setView] = useState<'dashboard' | 'inventory'>('dashboard');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchProducts = () => {
@@ -20,34 +22,32 @@ function App() {
 
   return (
     <div className="flex min-h-screen bg-slate-900">
-      <Sidebar />
+      <Sidebar currentView={view} setView={setView} />
+
       <main className="flex-1 p-8">
-        <header className="flex justify-between items-center mb-10">
-          <div>
-            <h1 className="text-3xl font-bold text-white">Panel de Control</h1>
-            <p className="text-slate-400">Bienvenido Joseph</p>
-          </div>
-          {/* Al hacer clic, abrimos el modal */}
-          <button 
-            onClick={() => setIsModalOpen(true)}
-            className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl transition-all shadow-lg font-semibold"
-          >
-            + Añadir Producto
-          </button>
-        </header>
-
-        <StatsCards products={products} />
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
-            <TopLowStock products={products} />
-          </div>
-          <div className="lg:col-span-2">
-            <InventoryTable products={products} />
-          </div>
-        </div>
-
-        {/* El Modal */}
+        {view === 'dashboard' ? (
+          <>
+            <header className="mb-10">
+              <h1 className="text-3xl font-bold text-white">Panel de Control</h1>
+            </header>
+            <StatsCards products={products} />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-1"><TopLowStock products={products} /></div>
+              <div className="lg:col-span-2"><InventoryTable products={products} /></div>
+            </div>
+          </>
+        ) : (
+          <>
+            <header className="mb-10">
+              <h1 className="text-3xl font-bold text-white">Inventario Completo</h1>
+              <p className="text-slate-400">Gestiona y filtra todos tus productos</p>
+            </header>
+            <FullInventory 
+              products={products} 
+              onAddClick={() => setIsModalOpen(true)} 
+            />
+          </>
+        )}
         <AddProductModal 
           isOpen={isModalOpen} 
           onClose={() => setIsModalOpen(false)} 
