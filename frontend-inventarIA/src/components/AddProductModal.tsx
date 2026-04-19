@@ -39,18 +39,20 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: Props) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.categoryId) return alert("Por favor selecciona una categoría");
+    const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault(); // El signo '?' hace que 'e' sea opcional
+    console.log("¡BOTÓN PRESIONADO!"); 
+    console.log("Datos capturados:", formData);
     
     try {
-      await api.post('/products', formData);
-      onProductAdded();
-      onClose();
+        const response = await api.post('products', formData);
+        console.log("Respuesta del servidor:", response.data); // <-- Añade esto
+        onProductAdded();
+        onClose();
     } catch (error) {
-      console.error("Error al crear producto", error);
+        console.error("Error detallado:", error);
     }
-  };
+    };
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
@@ -114,7 +116,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: Props) => {
               Cancelar
             </button>
             <button 
-              type="submit"
+              type="button"
+              onClick={handleSubmit}
               className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl font-bold shadow-lg shadow-blue-900/30 transition-all"
             >
               Crear Producto
