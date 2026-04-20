@@ -5,7 +5,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 @Injectable()
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
-
+  // Método para crear un nuevo producto
   async create(createProductDto: CreateProductDto) {
     return this.prisma.product.create({
       data: {
@@ -13,16 +13,22 @@ export class ProductsService {
         price: createProductDto.price,
         stock: createProductDto.stock,
         minStock: createProductDto.minStock,
-        categoryId: createProductDto.categoryId, // Asegúrate de enviar un ID de categoría válido
+        categoryId: createProductDto.categoryId,
       },
     });
-  } 
-  // ... los otros métodos
+  }
+  // Método para obtener todos los productos, incluyendo su categoría 
   findAll() {
     return this.prisma.product.findMany({
       include: { category: true }
     });
   }
+  // Método para eliminar un producto por su ID
+  async remove(id: string) {
+  return this.prisma.product.delete({
+    where: { id },
+  });
+}
   
   // Se añadirán los demas metodos despues.
 }

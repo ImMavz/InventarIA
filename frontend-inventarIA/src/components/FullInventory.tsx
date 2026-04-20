@@ -4,9 +4,10 @@ import { InventoryTable } from './InventoryTable';
 interface Props {
   products: any[];
   onAddClick: () => void; // Para recuperar el botón de añadir
+  onProductDeleted: () => void; // <--- Añadido a la interface
 }
 
-export const FullInventory = ({ products, onAddClick }: Props) => {
+export const FullInventory = ({ products, onAddClick, onProductDeleted }: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('none');
 

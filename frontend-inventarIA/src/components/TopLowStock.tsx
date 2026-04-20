@@ -15,13 +15,13 @@ export const TopLowStock = ({ products }: Props) => {
   // 3. Tomamos los primeros 5
   const lowStockProducts = [...products]
     .sort((a, b) => a.stock - b.stock)
-    .slice(0, 10);
+    .slice(0, 5);
 
   return (
     <div className="bg-slate-800/50 p-6 rounded-2xl border border-red-500/20 mb-8">
       <div className="flex items-center gap-2 mb-4">
         <span className="text-xl">🚨</span>
-        <h3 className="text-lg font-bold text-white">Prioridad de Reabastecimiento</h3>
+        <h3 className="text-lg font-bold text-white">Prioridad de Reabastecimiento (5 productos o menos)</h3>
       </div>
       
       <div className="space-y-3">
