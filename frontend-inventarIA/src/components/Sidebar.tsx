@@ -1,12 +1,13 @@
 interface Props {
-  currentView: 'dashboard' | 'inventory';
-  setView: (view: 'dashboard' | 'inventory') => void;
+  currentView: 'dashboard' | 'inventory' | 'ai';
+  setView: (view: 'dashboard' | 'inventory' | 'ai') => void;
 }
 
 export const Sidebar = ({ currentView, setView }: Props) => {
-  const menuItems: { name: string; id: 'dashboard' | 'inventory'; icon: string }[] = [
+  const menuItems: { name: string; id: 'dashboard' | 'inventory' | 'ai'; icon: string }[] = [
     { name: 'Dashboard', id: 'dashboard', icon: '📊' },
     { name: 'Inventario', id: 'inventory', icon: '📦' },
+    { name: 'Consultor de IA', id: 'ai', icon: '🤖' }, // <--- Nuevo ítem
   ];
 
   return (

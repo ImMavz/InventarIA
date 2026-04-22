@@ -7,6 +7,7 @@ import { TopLowStock } from './components/TopLowStock';
 import { FullInventory } from './components/FullInventory';
 import { AddProductModal } from './components/AddProductModal';
 import { EditStockModal } from './components/EditStockModal';
+import { AiConsultant } from './components/AiConsultant';
 
 interface Product {
   id: string;
@@ -18,7 +19,7 @@ interface Product {
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [view, setView] = useState<'dashboard' | 'inventory'>('dashboard');
+  const [view, setView] = useState<'dashboard' | 'inventory' | 'ai'>('dashboard');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const fetchProducts = () => {
@@ -85,6 +86,7 @@ function App() {
           onClose={() => setEditingProduct(null)} 
           onUpdate={fetchProducts}
         />
+      {view === 'ai' && <AiConsultant products={products} />}
       </main>
     </div>
   );
