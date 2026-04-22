@@ -5,9 +5,10 @@ interface Props {
   products: any[];
   onAddClick: () => void; // Para recuperar el botón de añadir
   onProductDeleted: () => void; // <--- Añadido a la interface
+  onEditClick: (product: any) => void; // Para abrir el nuevo modal
 }
 
-export const FullInventory = ({ products, onAddClick, onProductDeleted }: Props) => {
+export const FullInventory = ({ products, onAddClick, onProductDeleted, onEditClick }: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('none');
 
@@ -55,7 +56,11 @@ export const FullInventory = ({ products, onAddClick, onProductDeleted }: Props)
         </div>
       </div>
 
-      <InventoryTable products={filteredProducts} />
+      <InventoryTable 
+      products={filteredProducts}
+      onProductDeleted={onProductDeleted}
+      onEditClick={onEditClick} />
+      
     </div>
   );
 };

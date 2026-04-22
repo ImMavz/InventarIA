@@ -6,6 +6,7 @@ import { InventoryTable } from './components/InventoryTable';
 import { TopLowStock } from './components/TopLowStock';
 import { FullInventory } from './components/FullInventory';
 import { AddProductModal } from './components/AddProductModal';
+import { EditStockModal } from './components/EditStockModal';
 
 interface Product {
   id: string;
@@ -19,6 +20,7 @@ function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [view, setView] = useState<'dashboard' | 'inventory'>('dashboard');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const fetchProducts = () => {
     api.get('/products').then(res => setProducts(res.data));
   };
@@ -31,7 +33,7 @@ function App() {
   const topStockProducts = [...products]
     .sort((a, b) => b.stock - a.stock)
     .slice(0, 5);
-  return (
+    return (
     <div className="flex min-h-screen bg-slate-900">
       <Sidebar currentView={view} setView={setView} />
 
@@ -48,10 +50,10 @@ function App() {
                 <TopLowStock products={products} />
               </div>
               <div className="lg:col-span-2">
-                {/* Top en stock */}
                 <InventoryTable 
                   products={topStockProducts} 
-                  onProductDeleted={fetchProducts} 
+                  onProductDeleted={fetchProducts}
+                  onEditClick={(p) => setEditingProduct(p)}
                 />
               </div>
             </div>
@@ -65,13 +67,23 @@ function App() {
               products={products} 
               onAddClick={() => setIsModalOpen(true)} 
               onProductDeleted={fetchProducts}
+              onEditClick={(p) => setEditingProduct(p)}
             />
           </>
         )}
+
+        {/* --- MODALES GLOBALES (Fuera de la condición) --- */}
+        
         <AddProductModal 
           isOpen={isModalOpen} 
           onClose={() => setIsModalOpen(false)} 
           onProductAdded={fetchProducts} 
+        />
+
+        <EditStockModal 
+          product={editingProduct} 
+          onClose={() => setEditingProduct(null)} 
+          onUpdate={fetchProducts}
         />
       </main>
     </div>

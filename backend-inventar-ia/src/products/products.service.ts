@@ -29,6 +29,15 @@ export class ProductsService {
     where: { id },
   });
 }
+async updateStock(id: string, newStock: number) {
+  return this.prisma.product.update({
+    where: { id },
+    data: {
+      stock:
+        newStock // Enviamos el numero final de stock, no un incremento o decremento, el backend se encargará de actualizarlo correctamente
+    },
+  });
+}
   
   // Se añadirán los demas metodos despues.
 }
